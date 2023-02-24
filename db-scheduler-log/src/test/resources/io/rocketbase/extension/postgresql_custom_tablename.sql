@@ -1,4 +1,4 @@
-create table scheduled_execution_logs
+create table custom_tablename_logs
 (
     id            BIGINT                   not null primary key,
     task_name     text                     not null,
@@ -10,5 +10,5 @@ create table scheduled_execution_logs
     duration_ms   BIGINT                   not null
 );
 
-CREATE INDEX stl_started_idx ON scheduled_execution_logs (time_started);
-CREATE INDEX stl_task_name_idx ON scheduled_execution_logs (task_name);
+CREATE INDEX stl_custom_started_idx ON custom_tablename_logs (time_started);
+CREATE INDEX stl_custom_task_name_idx ON custom_tablename_logs (task_name);

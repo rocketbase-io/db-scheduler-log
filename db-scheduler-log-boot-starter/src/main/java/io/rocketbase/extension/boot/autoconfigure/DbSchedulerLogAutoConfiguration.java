@@ -15,10 +15,8 @@
  */
 package io.rocketbase.extension.boot.autoconfigure;
 
-import com.github.kagkarlsson.jdbc.JdbcRunner;
 import com.github.kagkarlsson.scheduler.boot.config.DbSchedulerCustomizer;
 import com.github.kagkarlsson.scheduler.exceptions.SerializationException;
-import com.github.kagkarlsson.scheduler.jdbc.AutodetectJdbcCustomization;
 import com.github.kagkarlsson.scheduler.serializer.Serializer;
 import com.github.kagkarlsson.scheduler.stats.StatsRegistry;
 import io.rocketbase.extension.LogRepository;
@@ -68,7 +66,7 @@ public class DbSchedulerLogAutoConfiguration {
     @Bean
     LogRepository logRepository(DbSchedulerCustomizer customizer, IdProvider idProvider) {
         log.debug("Missing LogRepository bean in context, creating a JdbcLogRepository");
-        return new JdbcLogRepository(config.getTableName(), new JdbcRunner(existingDataSource, true), customizer.serializer().orElse(SPRING_JAVA_SERIALIZER), new AutodetectJdbcCustomization(existingDataSource), idProvider);
+        return new JdbcLogRepository(existingDataSource, customizer.serializer().orElse(SPRING_JAVA_SERIALIZER), config.getTableName(), idProvider);
     }
 
     @ConditionalOnMissingBean(IdProvider.class)
