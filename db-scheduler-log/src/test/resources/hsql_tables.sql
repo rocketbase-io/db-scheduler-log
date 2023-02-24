@@ -6,5 +6,6 @@ create table scheduled_tasks (
     picked_by varchar(50),
     time_started TIMESTAMP WITH TIME ZONE,
     time_finished TIMESTAMP WITH TIME ZONE,
+    succeeded   BIT,
     duration_ms BIGINT,
 )

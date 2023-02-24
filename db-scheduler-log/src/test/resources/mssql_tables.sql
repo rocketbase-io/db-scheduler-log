@@ -6,6 +6,7 @@ create table scheduled_execution_logs (
   picked_by text,
   time_started datetimeoffset ,
   time_finished datetimeoffset ,
+  succeeded  bit,
   duration_ms BIGINT not null,
   INDEX stl_started_idx (time_started),
   INDEX stl_task_name_idx (task_name)

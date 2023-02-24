@@ -7,6 +7,7 @@ create table scheduled_execution_logs
     picked_by     text,
     time_started  timestamp with time zone not null,
     time_finished timestamp with time zone not null,
+    succeeded     BOOLEAN                  not null,
     duration_ms   BIGINT                   not null
 );
 

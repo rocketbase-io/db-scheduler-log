@@ -58,7 +58,7 @@ public class JdbcLogRepository implements LogRepository {
     public boolean createIfNotExists(ExecutionLog log) {
         try {
             jdbcRunner.execute(
-                "insert into " + tableName + "(id, task_name, task_instance, task_data, picked_by, time_started, time_finished, duration_ms) values(?, ?, ?, ?, ?, ?, ?, ?)",
+                "insert into " + tableName + "(id, task_name, task_instance, task_data, picked_by, time_started, time_finished, succeeded, duration_ms) values(?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (PreparedStatement p) -> {
                     p.setLong(1, idProvider.nextId());
                     p.setString(2, log.taskInstance.getTaskName());
@@ -71,7 +71,8 @@ public class JdbcLogRepository implements LogRepository {
                     p.setString(5, log.pickedBy);
                     jdbcCustomization.setInstant(p, 6, log.timeStarted);
                     jdbcCustomization.setInstant(p, 7, log.timeFinished);
-                    p.setLong(8, Duration.between(log.timeStarted, log.timeFinished).toMillis());
+                    p.setBoolean(8, log.succeeded);
+                    p.setLong(9, Duration.between(log.timeStarted, log.timeFinished).toMillis());
                 });
             return true;
         } catch (SQLRuntimeException e) {

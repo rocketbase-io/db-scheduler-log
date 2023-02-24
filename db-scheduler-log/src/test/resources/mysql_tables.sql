@@ -6,6 +6,7 @@ create table test.scheduled_execution_logs (
   picked_by varchar(50),
   time_started timestamp(6) not null,
   time_finished timestamp(6) not null,
+  succeeded BOOLEAN not null,
   duration_ms BIGINT not null,
 
   INDEX stl_started_idx (time_started);
