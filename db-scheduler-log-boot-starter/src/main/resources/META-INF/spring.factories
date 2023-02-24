@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.rocketbase.extension.boot.autoconfigure.DbSchedulerLogAutoConfiguration,\
+io.rocketbase.extension.boot.autoconfigure.DbSchedulerLogMetricAutoConfiguration
