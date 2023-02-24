@@ -26,7 +26,7 @@
         <dependency>
             <groupId>com.github.kagkarlsson</groupId>
             <artifactId>db-scheduler-spring-boot-starter</artifactId>
-            <version>${project.version}</version>
+            <version>${db-scheduler.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
