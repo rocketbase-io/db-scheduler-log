@@ -15,6 +15,7 @@
  */
 package io.rocketbase.extension.boot.autoconfigure;
 
+import com.github.kagkarlsson.scheduler.boot.autoconfigure.DbSchedulerMetricsAutoConfiguration;
 import com.github.kagkarlsson.scheduler.boot.config.DbSchedulerCustomizer;
 import com.github.kagkarlsson.scheduler.exceptions.SerializationException;
 import com.github.kagkarlsson.scheduler.serializer.Serializer;
@@ -29,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
@@ -48,6 +50,9 @@ import java.util.Objects;
 @AutoConfigurationPackage
 @AutoConfigureAfter({
     DataSourceAutoConfiguration.class,
+})
+@AutoConfigureBefore({
+    DbSchedulerMetricsAutoConfiguration.class,
 })
 @ConditionalOnBean(DataSource.class)
 @ConditionalOnProperty(value = "db-scheduler-log.enabled", matchIfMissing = true)

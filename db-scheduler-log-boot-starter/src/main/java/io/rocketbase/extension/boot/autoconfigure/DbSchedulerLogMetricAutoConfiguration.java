@@ -44,6 +44,7 @@ import java.util.List;
 @AutoConfigureAfter({
     MetricsAutoConfiguration.class,
     CompositeMeterRegistryAutoConfiguration.class,
+    DbSchedulerLogAutoConfiguration.class
 })
 @AutoConfigureBefore(DbSchedulerMetricsAutoConfiguration.class)
 @ConditionalOnProperty(value = "db-scheduler-log.enabled", matchIfMissing = true)
