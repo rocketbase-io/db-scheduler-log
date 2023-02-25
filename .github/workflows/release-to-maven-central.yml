@@ -35,23 +35,3 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.OSS_SONATYPE_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSS_SONATYPE_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Build and Test
-        uses: qcastel/github-actions-maven-cmd@master
-        if: "!contains(github.event.head_commit.message, '[ci skip]')"
-        with:
-          maven-args: "clean install"
-          git-release-bot-name: "bot-rocketbase"
-          git-release-bot-email: "bot@rocketbase.io"
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          gpg-enabled: "true"
-          gpg-key-id: ${{ secrets.GITHUB_GPG_KEY_ID }}
-          gpg-key: ${{ secrets.GITHUB_GPG_KEY }}
