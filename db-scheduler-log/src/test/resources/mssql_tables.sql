@@ -8,6 +8,8 @@ create table scheduled_execution_logs (
   time_finished datetimeoffset ,
   succeeded  bit,
   duration_ms BIGINT not null,
+  exception_data  nvarchar(max),
+
   INDEX stl_started_idx (time_started),
   INDEX stl_task_name_idx (task_name)
 )

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -46,7 +47,7 @@ public abstract class CompatibilityTest {
         assertEquals(result, true);
     }
 
-    public static class SampleData {
+    public static class SampleData implements Serializable {
         public final String name;
         public final Long value;
 

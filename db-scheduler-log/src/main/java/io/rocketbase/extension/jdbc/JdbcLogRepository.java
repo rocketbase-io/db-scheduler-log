@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
+import java.io.NotSerializableException;
 import java.sql.PreparedStatement;
 import java.time.Duration;
 
@@ -58,26 +59,39 @@ public class JdbcLogRepository implements LogRepository {
     public boolean createIfNotExists(ExecutionLog log) {
         try {
             jdbcRunner.execute(
-                "insert into " + tableName + "(id, task_name, task_instance, task_data, picked_by, time_started, time_finished, succeeded, duration_ms) values(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "insert into " + tableName + "(id, task_name, task_instance, task_data, picked_by, time_started, time_finished, succeeded, duration_ms, exception_data) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (PreparedStatement p) -> {
                     p.setLong(1, idProvider.nextId());
                     p.setString(2, log.taskInstance.getTaskName());
                     p.setString(3, log.taskInstance.getId());
-                    if (log.taskInstance.getData() != null || serializer == null) {
-                        p.setObject(4, null);
-                    } else {
-                        p.setObject(4, serializer.serialize(log.taskInstance.getData()));
-                    }
+                    p.setObject(4, serialize(log.taskInstance.getData()));
                     p.setString(5, log.pickedBy);
                     jdbcCustomization.setInstant(p, 6, log.timeStarted);
                     jdbcCustomization.setInstant(p, 7, log.timeFinished);
                     p.setBoolean(8, log.succeeded);
                     p.setLong(9, Duration.between(log.timeStarted, log.timeFinished).toMillis());
+                    p.setObject(10, log.cause != null ? serialize(new ExceptionWrapper(log.cause)) : null);
                 });
             return true;
         } catch (SQLRuntimeException e) {
             LOG.debug("Exception when inserting execution-log. Assuming it to be a constraint violation.", e);
             return false;
+        }
+    }
+
+    protected byte[] serialize(Object value) {
+        if (serializer == null || value == null) {
+            return null;
+        }
+        try {
+            return serializer.serialize(value);
+        } catch (Exception e) {
+            if (e instanceof NotSerializableException) {
+                LOG.warn("object is not serializable - you need to add Serializable");
+            } else {
+                LOG.error("serialization failed for {} -> {}", value.getClass(), e.getMessage());
+            }
+            return null;
         }
     }
 
