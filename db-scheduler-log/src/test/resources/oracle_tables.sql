@@ -9,6 +9,8 @@ create table scheduled_tasks_log
     time_finished  TIMESTAMP(6) not null,
     succeeded      NUMBER(1, 0),
     duration_ms    NUMBER       not null,
-    exception_data blob
+    exception_class varchar(1000),
+    exception_message blob,
+    exception_stacktrace blob
 )
 

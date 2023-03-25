@@ -8,5 +8,7 @@ create table scheduled_tasks (
     time_finished TIMESTAMP WITH TIME ZONE,
     succeeded   BIT,
     duration_ms BIGINT,
-    exception_data blob,
+    exception_class varchar(1000),
+    exception_message blob,
+    exception_stacktrace blob
 )

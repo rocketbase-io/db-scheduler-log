@@ -8,8 +8,11 @@ create table test.scheduled_execution_logs (
   time_finished timestamp(6) not null,
   succeeded BOOLEAN not null,
   duration_ms BIGINT not null,
-  exception_data blob,
+  exception_class      varchar(1000),
+  exception_message    blob,
+  exception_stacktrace blob
 
   INDEX stl_started_idx (time_started);
   INDEX stl_task_name_idx (task_name);
+  INDEX stl_exception_class_idx (exception_class);
 )

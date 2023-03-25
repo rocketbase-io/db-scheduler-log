@@ -27,6 +27,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.io.NotSerializableException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.PreparedStatement;
 import java.time.Duration;
 
@@ -59,7 +61,7 @@ public class JdbcLogRepository implements LogRepository {
     public boolean createIfNotExists(ExecutionLog log) {
         try {
             jdbcRunner.execute(
-                "insert into " + tableName + "(id, task_name, task_instance, task_data, picked_by, time_started, time_finished, succeeded, duration_ms, exception_data) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "insert into " + tableName + "(id, task_name, task_instance, task_data, picked_by, time_started, time_finished, succeeded, duration_ms, exception_class, exception_message, exception_stacktrace) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (PreparedStatement p) -> {
                     p.setLong(1, idProvider.nextId());
                     p.setString(2, log.taskInstance.getTaskName());
@@ -70,13 +72,25 @@ public class JdbcLogRepository implements LogRepository {
                     jdbcCustomization.setInstant(p, 7, log.timeFinished);
                     p.setBoolean(8, log.succeeded);
                     p.setLong(9, Duration.between(log.timeStarted, log.timeFinished).toMillis());
-                    p.setObject(10, log.cause != null ? serialize(new ExceptionWrapper(log.cause)) : null);
+                    p.setString(10, log.cause != null ? log.cause.getClass().getName() : null);
+                    p.setString(11, log.cause != null ? log.cause.getMessage() : null);
+                    p.setString(12, getStacktrace(log.cause));
                 });
             return true;
         } catch (SQLRuntimeException e) {
             LOG.debug("Exception when inserting execution-log. Assuming it to be a constraint violation.", e);
             return false;
         }
+    }
+
+    protected String getStacktrace(Throwable cause) {
+        if (cause == null) {
+            return null;
+        }
+        StringWriter writer = new StringWriter();
+        PrintWriter out = new PrintWriter(writer);
+        cause.printStackTrace(out);
+        return writer.toString();
     }
 
     protected byte[] serialize(Object value) {
