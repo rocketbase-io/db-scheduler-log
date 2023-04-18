@@ -78,7 +78,7 @@ public class JdbcLogRepository implements LogRepository {
                 });
             return true;
         } catch (SQLRuntimeException e) {
-            LOG.debug("Exception when inserting execution-log. Assuming it to be a constraint violation.", e);
+            LOG.error("Exception when inserting execution-log. Assuming it to be a constraint violation: {}", e.getMessage());
             return false;
         }
     }
