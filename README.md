@@ -30,7 +30,7 @@ final Scheduler scheduler=Scheduler
         .create(dataSource)
         .startTasks(hourlyTask)
         .threads(5)
-        .serializer(new LogStatsPlainRegistry(jdbcLogRepository))
+        .statsRegistry(new LogStatsPlainRegistry(jdbcLogRepository))
         .build();
 ```
 
