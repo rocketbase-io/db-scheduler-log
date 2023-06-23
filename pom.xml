@@ -43,22 +43,13 @@
 
         <!-- Dependency versions -->
         <spring-boot.version>2.7.3</spring-boot.version>
-        <db-scheduler.version>11.7</db-scheduler.version>
+        <db-scheduler.version>12.4.0</db-scheduler.version>
     </properties>
 
     <modules>
         <module>db-scheduler-log</module>
         <module>db-scheduler-log-boot-starter</module>
     </modules>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -129,7 +120,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.2</version>
+                    <version>3.1.2</version>
                 </plugin>
                 <plugin>
                     <groupId>com.mycila</groupId>
@@ -165,7 +156,7 @@
                 <!-- Release plugins -->
                 <plugin>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.4.1</version>
+                    <version>3.5.0</version>
                     <executions>
                         <execution>
                             <id>attach-javadocs</id>
@@ -177,7 +168,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>3.3.0</version>
                     <executions>
                         <execution>
                             <id>attach-sources</id>

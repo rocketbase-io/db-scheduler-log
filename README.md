@@ -21,6 +21,9 @@
    for [postgresql](db-scheduler-log/src/test/resources/postgresql_tables.sql), [oracle](db-scheduler-log/src/test/resources/oracle_tables.sql), [mssql](db-scheduler-log/src/test/resources/mssql_tables.sql)
    or [mysql](db-scheduler-log/src/test/resources/mysql_tables.sql).
 
+> :mega: It's highly recommended to create the log-table with daily partitions based on time_started with a proper
+> retention when you have a huge amount of running tasks... otherwise you could run out of disk-space quite soon.
+
 3. Customize the scheduler to use extended StatsRegistry.
 
 ```java
