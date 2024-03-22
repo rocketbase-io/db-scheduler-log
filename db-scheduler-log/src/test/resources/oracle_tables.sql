@@ -1,4 +1,4 @@
-create table scheduled_tasks_log
+create table scheduled_execution_logs
 (
     id             NUMBER       not null primary key,
     task_name      varchar(100),
